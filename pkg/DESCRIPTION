@@ -1,0 +1,10 @@
+Package: QuantCombine
+Version: 0.0-1
+Date: 2010-05-27
+Title: Quantile Scoring for Combining Microarray Datasets
+Author: Sadik A. Khuder <sadik.khuder@utoledo.edu>, Peter S. Bazeley <peter.bazeley@gmail.com>
+Maintainer: Peter S. Bazeley <peter.bazeley@gmail.com>
+Depends: R (>= 1.6.1)
+Description: The package contains functions that can be used to combine microarray datasets from different platforms. 
+License: GPL (>= 2) 
+Packaged: 2010-07-03 06:23:50 UTC; pbazeley
