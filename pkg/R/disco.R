@@ -20,6 +20,5 @@ disco <- function(freqs) {
     res=as.double(rep(0.0,9*nrow(freqs)))
     )
 
-    #data.frame(sapply(0:(nrow(freqs)-1),function(g){list("chisq"=output$res[1+(g*9)],"p.value"=output$res[2+(g*9)],"beta1"=c(output$res[(3+g*9):(6+g*9)]),"beta2"=c(output$res[(7+g*9):(9+g*9)]))})
-    lapply(0:(nrow(freqs)-1),function(g){list("chisq"=output$res[1+(g*9)],"p.value"=output$res[2+(g*9)],"beta1"=c(output$res[(3+g*9):(6+g*9)]),"beta2"=c(output$res[(7+g*9):(9+g*9)]))} 
+    lapply(0:(nrow(freqs)-1),function(g){list("chisq"=output$res[1+(g*9)],"p.value"=output$res[2+(g*9)],"beta1"=c(output$res[(3+g*9):(6+g*9)]),"beta2"=c(output$res[(7+g*9):(9+g*9)]))}) 
 }
