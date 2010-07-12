@@ -40,12 +40,12 @@ void derivatives1(double *f1,double *d1,int *labels,int *n_labels,double *beta1,
 	  ar4[1] += pow(labels[i],4) * nr[i][1];
   }
 
-  for(i=0;i<4;i++) {
+  for(i=0;i<BETA1_SIZE;i++) {
 
 	  *(f1+i) = 0;
 	  
-	  for(j=0;j<4;j++) {
-		  *(d1 + 4*i + j) = 0;
+	  for(j=0;j<BETA1_SIZE;j++) {
+		  *(d1 + BETA1_SIZE*i + j) = 0;
 	  }
   }
 
@@ -56,13 +56,13 @@ void derivatives1(double *f1,double *d1,int *labels,int *n_labels,double *beta1,
 	  
 	  *(f1+i+2) = *(colsums_freqs_x_labels_x_labels+i) - *(colsums_freqs+i) * (ar2[i]/ar[i]);
 
-	  *(d1+4*i+i) = -*(colsums_freqs+i) * ((-pow(ar1[i],2) + (ar[i]*ar2[i]))/pow(ar[i],2) );
+	  *(d1+BETA1_SIZE*i+i) = -*(colsums_freqs+i) * ((-pow(ar1[i],2) + (ar[i]*ar2[i]))/pow(ar[i],2) );
 		  
-	  *(d1 + 4*i + 2+i) = -*(colsums_freqs+i) * ( ( (-ar2[i]*ar1[i]) + (ar[i]*ar3[i]))/pow(ar[i],2));
+	  *(d1 + BETA1_SIZE*i + 2+i) = -*(colsums_freqs+i) * ( ( (-ar2[i]*ar1[i]) + (ar[i]*ar3[i]))/pow(ar[i],2));
 	  
-	  *(d1 + 4*(2+i) + i) = *(d1 + 4*i + 2+i);
+	  *(d1 + BETA1_SIZE*(2+i) + i) = *(d1 + BETA1_SIZE*i + 2+i);
 	  
-	  *(d1 + 4*(2+i) + 2+i) = -*(colsums_freqs+i) * ( ( -pow(ar2[i],2) + (ar[i]*ar4[i]) )/pow(ar[i],2));
+	  *(d1 + BETA1_SIZE*(2+i) + 2+i) = -*(colsums_freqs+i) * ( ( -pow(ar2[i],2) + (ar[i]*ar4[i]) )/pow(ar[i],2));
 
   }
   
@@ -104,12 +104,12 @@ void derivatives2(double *f2,double *d2,int *labels,int *n_labels,double *beta2,
 	  aar4[1] += pow(labels[i],4) * anr[i][1];
   }
 
-  for(i=0;i<3;i++) {
+  for(i=0;i<BETA2_SIZE;i++) {
 
 	  *(f2+i) = 0;
 	  
-	  for(j=0;j<3;j++) {
-		  *(d2 + 3*i + j) = 0;
+	  for(j=0;j<BETA2_SIZE;j++) {
+		  *(d2 + BETA2_SIZE*i + j) = 0;
 	  }
   }
 
