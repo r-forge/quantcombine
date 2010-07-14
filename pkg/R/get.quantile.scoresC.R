@@ -68,7 +68,7 @@ get.quantile.scores.C <- function(exprs,grp1,grp2,n.quantiles=4) {
     
     ##check for NAs in data
     if(any(is.na(exprs))) {
-        stop("NAs not allowed...")
+        stop("NOTE: Missing values were found in the exprs data. This is okay; these will be given a value of -1000 by get.quantile.scores, and will be ignored by get.quantile.freqs.")
     }
 
     ##check that values are all numbers?... not likely that they aren't
@@ -116,5 +116,5 @@ get.quantile.scores.C <- function(exprs,grp1,grp2,n.quantiles=4) {
 
     df <- data.frame(matrix(output$scores,ncol=n.scores,byrow=TRUE),row.names = row.names(exprs))
     names(df) <- names(exprs)
-    df
+    return(df)
 }
