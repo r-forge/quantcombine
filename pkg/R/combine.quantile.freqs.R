@@ -44,7 +44,6 @@ combine.quantile.freqs <- function(d1.fr,d2.fr,ID.map) {
             d1.fr = d1.fr.df
         }
         else {
-            ##can it be a vector and have a name?
             stop("First frequency data table must be data frame or matrix.")
         }
     }
@@ -56,7 +55,6 @@ combine.quantile.freqs <- function(d1.fr,d2.fr,ID.map) {
             d2.fr = d2.fr.df
         }
         else {
-            ##can it be a vector and have a name?
             stop("Second frequency data table must be data frame or matrix.")
         }
     }
@@ -72,7 +70,7 @@ combine.quantile.freqs <- function(d1.fr,d2.fr,ID.map) {
         }
     }
 
-    ##check that inputs have genes as row names
+    ##check that inputs have genes as row names and not column 1
     if( (sum(d1.fr[,1] %in% row.names(ID.map))>0) | (sum(d1.fr[,1] %in% ID.map[1,])>0) | (sum(d1.fr[,1] %in% ID.map[,2])>0) ) {
         d1.fr = data.frame(d1.fr[,2:ncol(d1.fr)],row.names=d1.fr[,1])
     }
@@ -81,9 +79,6 @@ combine.quantile.freqs <- function(d1.fr,d2.fr,ID.map) {
     }
     
 
-    
-
-    ##check that inputs have gene names - perhaps not necessary as long as columns that match
     
     ##figure out which column in ID.map has IDs matching d1 and d2
     d1.rn.match.sum = sum(row.names(d1.fr) %in% row.names(ID.map) == TRUE)
@@ -107,34 +102,40 @@ combine.quantile.freqs <- function(d1.fr,d2.fr,ID.map) {
         d1.fr.common = d1.fr[as.character(row.names(ID.map)),]
         d2.fr.common = d2.fr[as.character(ID.map[,1]),]
 
-        d1.common = merge(d1.fr,ID.map,by.x=row.names(d1.fr),by.y=row.names(ID.map))
-        d2.common = merge(d2.fr,ID.map,by.x=row.names(d2.fr),by.y=ID.map[,1])
-        d.common = merge(d1.common,d2.common)
-        
     }
-    else if( (d1.rn.match.sum>0) & (d1.col1.match.sum==0) & (d1.col2.match.sum==0) & (d2.rn.match.sum==0) & (d2.col1.match.sum==0) & (d2.col2.match.sum>0) ) {
+    if( (d1.rn.match.sum>0) & (d1.col1.match.sum==0) & (d1.col2.match.sum==0) & (d2.rn.match.sum==0) & (d2.col1.match.sum==0) & (d2.col2.match.sum>0) ) {
+
         d1.fr.common = d1.fr[as.character(row.names(ID.map)),]
         d2.fr.common = d2.fr[as.character(ID.map[,2]),]
     }
-    else if( (d1.rn.match.sum==0) & (d1.col1.match.sum>0) & (d1.col2.match.sum==0) & (d2.rn.match.sum>0) & (d2.col1.match.sum==0) & (d2.col2.match.sum==0) ) {
+    if( (d1.rn.match.sum==0) & (d1.col1.match.sum>0) & (d1.col2.match.sum==0) & (d2.rn.match.sum>0) & (d2.col1.match.sum==0) & (d2.col2.match.sum==0) ) {
         d1.fr.common = d1.fr[as.character(ID.map[,1]),]
         d2.fr.common = d2.fr[as.character(row.names(ID.map)),]
     }
-    else if( (d1.rn.match.sum==0) & (d1.col1.match.sum>0) & (d1.col2.match.sum==0) & (d2.rn.match.sum==0) & (d2.col1.match.sum==0) & (d2.col2.match.sum>0) ) {
+    if( (d1.rn.match.sum==0) & (d1.col1.match.sum>0) & (d1.col2.match.sum==0) & (d2.rn.match.sum==0) & (d2.col1.match.sum==0) & (d2.col2.match.sum>0) ) {
         d1.fr.common = d1.fr[as.character(ID.map[,1]),]
         d2.fr.common = d2.fr[as.character(ID.map[,2]),]
+        
+        d1.fr.IDcol = 1
+        d2.fr.IDcol = 2
+        #d.common = d1.fr.common + d2.fr.common
+        #cat("hey")
+
+        #d1.common = merge(d1.fr,ID.map,by.x=row.names(d1.fr),by.y=ID.map[,1])
+        #d2.common = merge(d2.fr,ID.map,by.x=row.names(d2.fr),by.y=ID.map[,2])
+        #d.common = merge(d1.common,d2.common)
     }
-    else if( (d1.rn.match.sum==0) & (d1.col1.match.sum==0) & (d1.col2.match.sum>0) & (d2.rn.match.sum>0) & (d2.col1.match.sum==0) & (d2.col2.match.sum==0) ) {
+    if( (d1.rn.match.sum==0) & (d1.col1.match.sum==0) & (d1.col2.match.sum>0) & (d2.rn.match.sum>0) & (d2.col1.match.sum==0) & (d2.col2.match.sum==0) ) {
         d1.fr.common = d1.fr[as.character(ID.map[,2]),]
         d2.fr.common = d2.fr[as.character(row.names(ID.map)),]
     }
-    else if( (d1.rn.match.sum==0) & (d1.col1.match.sum==0) & (d1.col2.match.sum>0) & (d2.rn.match.sum==0) & (d2.col1.match.sum>0) & (d2.col2.match.sum==0) ) {
+    if( (d1.rn.match.sum==0) & (d1.col1.match.sum==0) & (d1.col2.match.sum>0) & (d2.rn.match.sum==0) & (d2.col1.match.sum>0) & (d2.col2.match.sum==0) ) {
         d1.fr.common = d1.fr[as.character(ID.map[,2]),]
         d2.fr.common = d2.fr[as.character(ID.map[,1]),]
     }
-    else {
-        stop("The row names, first column, or second column of ID.map must contain IDs that match the row names or first column of d1.fr and d2.fr (a different ID.map column for each dataset).")
-    }
+    ##else {
+    ##    stop("The row names, first column, or second column of ID.map must contain IDs that match the row names or first column of d1.fr and d2.fr (a different ID.map column for each dataset).")
+    ##}
     
     ##subset common IDs
     ##NOTE: verify that order in ID map prevails in subset
@@ -142,49 +143,108 @@ combine.quantile.freqs <- function(d1.fr,d2.fr,ID.map) {
     ##d2.fr.common = d2.fr[as.character(ID.map.df[,2]),]
 
     ## if ID.map longer than data, will show up as NAs at bottom, so remove these
-    ##d1.fr.common = d1.fr.common[!is.na.data.frame(d1.fr.common)[,1],]
-    ##d2.fr.common = d2.fr.common[!is.na.data.frame(d2.fr.common)[,1],]
-    
-    ##check which columns have data and which have IDs
-    ##f1 = function(x) {is.factor(d1.fr.common[1,x])}
-    ##f2 = function(x) {is.factor(d2.fr.common[1,x])}
+    d1.fr.common = d1.fr.common[!is.na.data.frame(d1.fr.common)[,1],]
+    d2.fr.common = d2.fr.common[!is.na.data.frame(d2.fr.common)[,1],]
 
-    ##d1.fr.common.IDs = sapply(1:ncol(d1.fr.common),f1)
-    ##d2.fr.common.IDs = sapply(1:ncol(d2.fr.common),f2)
+    ##check which columns have data and which have IDs
+    f1 = function(x) {is.factor(d1.fr.common[1,x])}
+    f2 = function(x) {is.factor(d2.fr.common[1,x])}
+
+    d1.fr.common.IDs = sapply(1:ncol(d1.fr.common),f1)
+    d2.fr.common.IDs = sapply(1:ncol(d2.fr.common),f2)
 
     
     ##store IDs from each data
     ##d1.fr.common.IDcols = d1.fr.common[,d1.fr.common.IDs]
     ##d2.fr.common.IDcols = d2.fr.common[,d2.fr.common.IDs]
 
+    d1.fr.common.IDcols = data.frame(d1.fr.common[,d1.fr.common.IDs],row.names=row.names(d1.fr.common))
+    d2.fr.common.IDcols = data.frame(d2.fr.common[,d2.fr.common.IDs],row.names=row.names(d2.fr.common))
+
+    
     
     ##rename d2 rows to same as d1
     ##order should be aligned by subset
     ##row.names(d2.fr.common) = row.names(d1.fr.common)
 
     ##check that inputs have same number of columns and column labels
+    if(ncol(d1.fr.common[,!d1.fr.common.IDs]) != ncol(d1.fr.common[,!d1.fr.common.IDs])) {
+        stop("d1.fr and d2.fr must have same number of score frequency columns.")
+    }
+
+    ##dims must match at this point
     ##if(dim(d1.fr.common[,!d1.fr.common.IDs]) != dim(d1.fr.common[,!d1.fr.common.IDs])) {
-    ##    stop("d1.fr and d2.fr must have same number of genes and score frequency columns.")
+    ##    stop("dims do not match: this is a bug; please contact the package maintainer")
     ##}
     
     ##merge datasets
     ##d1's IDs will prevail
-    ##d.fr.common = d1.fr.common[,!d1.fr.common.IDs] + d2.fr.common[,!d2.fr.common.IDs]
+    d.fr.common = d1.fr.common[,!d1.fr.common.IDs] + d2.fr.common[,!d2.fr.common.IDs]
+
+    d1.fr.common.IDs.sum = sum(d1.fr.common.IDs==FALSE)
+    names(d.fr.common) = names(d1.fr.common)[1:d1.fr.common.IDs.sum]
 
     ##IDs = cbind(d1.fr.common.IDcols,d2.fr.common.IDcols,d.fr.common,ID.map.df)
 
     ##sum(
 
+    ##d.fr.common = merge(d.fr.common,ID.map,by.x="row.names",by.y=d1.fr.IDcol) ##since d1's IDs prevail
+    ##d.fr.common = merge(d.fr.common,d1.fr.commmon.IDcols,by.x="row.names",by.y="row.names")
+    ##d.fr.common = merge(d.fr.common,d2.fr.commmon.IDcols,by.x="row.names",by.y=d2.fr.IDcol)
     
     ##add IDs to end of merged data
     ##d.fr.common = cbind(d.fr.common,d1.fr.common.IDcols)
     ##d.fr.common = cbind(d.fr.common,d2.fr.common.IDcols)
 
     ##d1's IDs prevailed in merge, so add d2's IDs to end
-    ##d.fr.common = cbind(d.fr.common,ID.map.df[,2])
+    ##e = merge(d.fr.common,ID.map, by.x = "row.names",by.y = names(ID.map)[d1.fr.IDcol])
+
+    m = match(row.names(d.fr.common),ID.map[,d1.fr.IDcol])
+
+    d.fr.common = cbind(d.fr.common,ID.map[m,d2.fr.IDcol])
+
+    n = names(ID.map)[d2.fr.IDcol]
+
+    attributes(d.fr.common)$names[ncol(d.fr.common)] = n
+
+
+
+
+    
+    d.fr.common.ncol = ncol(d.fr.common)
+    
+    d1.fr.common.IDs.sum = sum(d1.fr.common.IDs==TRUE)
+    d2.fr.common.IDs.sum = sum(d2.fr.common.IDs==TRUE)
+    
+    if(d1.fr.common.IDs.sum > 0) {
+        for(i in seq(1,d1.fr.common.IDs.sum)) {
+            
+            matches = d.fr.common[,d.fr.common.ncol] %in% d1.fr.common.IDcols[,i]
+            
+            if(sum(matches==TRUE) == 0) {
+                n = names(d1.fr.common.IDcols[,i])[1]
+                attributes(d.fr.common)$names[ncol(d.fr.common)] = n
+                d.fr.common = cbind(d.fr.common,d1.fr.common.IDcols[,i])
+            }
+        }
+    }
+    
+    if(d2.fr.common.IDs.sum > 0) {
+        for(i in seq(1,d2.fr.common.IDs.sum)) {
+            
+            matches = d.fr.common[,d.fr.common.ncol] %in% d2.fr.common.IDcols[,i]
+            
+            if(sum(matches==TRUE) == 0) {
+                d.fr.common = cbind(d.fr.common,d2.fr.common.IDcols[,i])
+                n = names(d1.fr.common.IDcols[,i])[1]
+                attributes(d.fr.common)$names[ncol(d.fr.common)] = n
+
+            }
+        }
+    }
     
     ##don't add redundant columns
-
+    
     ##know first column, sort it
     
         
@@ -192,9 +252,12 @@ combine.quantile.freqs <- function(d1.fr,d2.fr,ID.map) {
     ##merge extra columns, sort by known first column
         
     
-    ##d.fr.common
-    d.common
+    return(d.fr.common)
+    
 }
 
 
 ##end of combine.quantile.freqs.R
+
+
+
