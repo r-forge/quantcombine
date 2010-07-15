@@ -8,8 +8,8 @@ get.quantile.scores.C <- function(exprs,grp1,grp2,n.quantiles=4) {
     }
 
     ##check that n.quantiles is positive
-    if(n.quantiles < 0) {
-        stop("Please specify a value > 0 for n.quantiles.")
+    if( (n.quantiles < 2) | (n.quantiles > 99) ) {
+        stop("Please specify a value from 2-99 for n.quantiles.")
     }
     
     ##check that exprs is a data frame; convert to if otherwise
