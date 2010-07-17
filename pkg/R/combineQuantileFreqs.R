@@ -33,7 +33,7 @@
 #######################################################################
 
 
-combinequantile.freqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
+combineQuantileFreqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
     options(warn=-1)
 
     

@@ -1,5 +1,5 @@
 
-get.quantile.scores.C <- function(exprs,grp1,grp2,n.quantiles=4) {
+getQuantileScores <- function(exprs,grp1,grp2,n.quantiles=4) {
 
     ##check that n.quantiles is an integer
     is.wholenumber <- function(x,tol=.Machine$double.eps^0.5) abs(x - round(x)) < tol

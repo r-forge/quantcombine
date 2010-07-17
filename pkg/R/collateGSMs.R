@@ -1,6 +1,6 @@
 ##store list of GSM names, one per row, in a text file
 
-collate.exprs <- function(gsms,sample.names=gsms) {
+collateGSMs <- function(gsms,sample.names=gsms) {
 
     if( (length(sample.names)>0) & (length(gsms) != length(sample.names)) ) {
         stop("gsms and sample.names arguments must be the same length.")

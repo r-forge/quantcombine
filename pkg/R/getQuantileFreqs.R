@@ -1,5 +1,5 @@
 
-get.quantile.freqs.C <- function(scores,grp1,grp2) {
+getQuantileFreqs <- function(scores,grp1,grp2) {
 
 
     ##check that scores is a data frame; convert to if otherwise

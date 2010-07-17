@@ -1,5 +1,5 @@
 
-disco.chisq <- function(freqs) {
+discoChiSq <- function(freqs) {
 
     ##check that labels present
     names = names(freqs)
