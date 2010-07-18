@@ -66,7 +66,7 @@ void newton1(double *f1,double *d1,int *labels,int *n_labels,double *beta1,int *
 		F77_CALL(dgesv)(&N,&NRHS,d1,&LDA,IPIV,B,&LDB,&INFO);
 		
 		if(INFO != 0) {
-			error("Error occured in dgesv LAPACK routine in newton1 C function, which is part of the newton R function; return value is %d\n",INFO);
+			error("Error occured in dgesv LAPACK routine in newton1 C function, which is part of the discoChiSq R function; return value is %d\n",INFO);
 		}
 		
 		F77_CALL(dgemm)(&transa,&transb,&m,&n,&k,&alpha,B,&lda,f1,&ldb,&beta,c,&ldc);
@@ -145,7 +145,7 @@ void newton2(double *f1,double *f2,double *d2,int *labels,int *n_labels,double *
 			F77_CALL(dgesv)(&N,&NRHS,d2,&LDA,IPIV,B,&LDB,&INFO);
 		
 			if(INFO != 0) {
-				error("Error occured in dgesv LAPACK routine in newton2 C function, which is part of newton R function; return value is %d\n",INFO);
+				error("Error occured in dgesv LAPACK routine in newton2 C function, which is part of discoChiSq R function; return value is %d\n",INFO);
 			}
 						
 			F77_CALL(dgemm)(&transa,&transb,&m,&n,&k,&alpha,B,&lda,f2,&ldb,&beta,c,&ldc);
