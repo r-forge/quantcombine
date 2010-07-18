@@ -9,6 +9,7 @@
 #include <R_ext/Lapack.h>
 #include <Rmath.h>
 
+#define NA_VALUE -1000
 #define BETA1_SIZE 4
 #define BETA2_SIZE 3
 #define TOL 0.000000000001
