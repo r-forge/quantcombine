@@ -68,7 +68,8 @@ getQuantileScores <- function(exprs,grp1,grp2,n.quantiles=4) {
     
     ##check for NAs in data
     if(any(is.na(exprs))) {
-        stop("NOTE: Missing values were found in the exprs data. This is okay; these will be given a value of -1000 by get.quantile.scores, and will be ignored by get.quantile.freqs.")
+        warning("\nMissing values were found in the exprs data. This is okay; these will be given a value of -1000 by getQuantileScores, and will be ignored by getQuantileFreqs.\n"
+                ,call.=FALSE)
     }
 
     ##check that values are all numbers?... not likely that they aren't
@@ -111,6 +112,7 @@ getQuantileScores <- function(exprs,grp1,grp2,n.quantiles=4) {
                  n.labels = as.integer(n.labels),
                  quantile.thresholds = as.double(quantile.thresholds),
                  scores = as.integer(rep(0,n.scores*nrow(exprs))),
+                 NAOK=TRUE,
                  PACKAGE="QuantCombine"
                  )
 
