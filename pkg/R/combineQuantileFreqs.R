@@ -137,8 +137,8 @@ combineQuantileFreqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
     ##d1's IDs will prevail
     d.fr.common = d1.fr.common[,!d1.fr.common.IDs] + d2.fr.common[,!d2.fr.common.IDs]
 
-    d1.fr.common.IDs.sum = sum(d1.fr.common.IDs==FALSE)
-    names(d.fr.common) = names(d1.fr.common)[1:d1.fr.common.IDs.sum]
+    d1.fr.common.nonIDs.sum = sum(d1.fr.common.IDs==FALSE)
+    names(d.fr.common) = names(d1.fr.common)[1:d1.fr.common.nonIDs.sum]
     
     ##d1's IDs prevailed in merge, so add d2's IDs to end
     ##e = merge(d.fr.common,ID.map, by.x = "row.names",by.y = names(ID.map)[d1.fr.IDcol])
@@ -192,7 +192,7 @@ combineQuantileFreqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
 }
 
 
-##end of combine.quantile.freqs.R
+##end of combineQuantileFreqs.R
 
 
 
