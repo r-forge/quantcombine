@@ -35,7 +35,6 @@ void disco_chisq(int *freqs,int *n_genes,int *labels,int *n_labels,double *res) 
 		for(i=0;i<*n_labels;i++) {
 
 			colsums_freqs[0] += *(freqs+i+gene_offset);
-
 			colsums_freqs[1] += *(freqs+i+*n_labels+gene_offset);
 			
 			colsums_freqs_x_labels[0] += *(freqs+i+gene_offset) * *(labels+i);
@@ -43,7 +42,6 @@ void disco_chisq(int *freqs,int *n_genes,int *labels,int *n_labels,double *res) 
 			
 			colsums_freqs_x_labels_x_labels[0] += *(freqs+i+gene_offset) * *(labels+i) * *(labels+i);
 			colsums_freqs_x_labels_x_labels[1] += *(freqs+i+*n_labels+gene_offset) * *(labels+i) * *(labels+i);
-			
 		}
 		
 		for(i=0;i<BETA1_SIZE;i++) {
