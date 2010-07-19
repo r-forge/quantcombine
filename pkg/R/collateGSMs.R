@@ -5,6 +5,11 @@ collateGSMs <- function(gsms,sample.names=gsms) {
     if( (length(sample.names)>0) & (length(gsms) != length(sample.names)) ) {
         stop("gsms and sample.names arguments must be the same length.")
     }
+
+    ##check that valid vector present
+    if( (is.null(gsms)) | (length(gsms)==0) ) {
+        stop("Please enter a vector of GSMs for the first argument.")
+    }
     
     ### END OF INPUT CHECKS ###
     
@@ -40,7 +45,7 @@ collateGSMs <- function(gsms,sample.names=gsms) {
         ##download may fail
 	if( !(class(gsm) == "try-error") ) { 	
 
-            ##check for Table
+            ##check for Table1
             tab = Table(gsm)
 
             if(exists("tab")) {
@@ -71,15 +76,15 @@ collateGSMs <- function(gsms,sample.names=gsms) {
                         }
                     }
                     else {
-                        cat(paste("Error in extracting data for ",gsm.name,sep=""))
+                        warning(paste("Error in extracting data for ",gsm.name,sep=""))
                     }
                 }
                 else {
-                    cat(paste("MAS 5.0 expressions missing from ",gsm.name,sep=""))
+                    warning(paste("MAS 5.0 expressions missing from ",gsm.name,sep=""))
                 }
             }
             else {
-                cat(paste("Data table missing for ",gsm.name,sep=""))
+                warning(paste("Data table missing for ",gsm.name,sep=""))
             }
 	}
 	else {
@@ -88,13 +93,30 @@ collateGSMs <- function(gsms,sample.names=gsms) {
     }
     
     if( length(missed) != 0 ) {
-        warn("The following files were not downloaded due to an error during the download:\n")
-	for(i in 1:length(missed)) {
-            warn(paste(missed[i],"\n",sep=""))
-        }
-    }
-    
-    names(dat) = sample.names
+        
+        m.list = ""
+        m.pos = vector()
+        #pres = vector()
 
-    return(dat)
+
+        
+        for(i in 1:length(missed)) {
+            m.list = paste(m.list," ",missed[i],sep="")
+            m.pos = c(m.pos, grep(paste("^",missed[i],"$",sep=""),gsms))
+        }
+
+        pres = sample.names[-unique(m.pos)]
+        
+        warning(paste("The following files were not downloaded due to an error during the download: ",m.list,sep=""))
+    } else {
+        pres = sample.names
+    }
+
+    if(exists("dat")) {
+        names(dat) = pres
+        
+        return(dat)
+    } else {
+        stop(paste("Unable to find data for GSMs: ",gsms,sep=""))
+    }
 }
