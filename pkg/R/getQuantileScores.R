@@ -61,10 +61,14 @@ getQuantileScores <- function(exprs,grp1,grp2,n.quantiles=4) {
     ##    warn("NOTE: Rearranging samples in output so grp1 and grp2 are separate, and grp2 follows grp1.")
     ##}
 
-    exprs <- try(cbind(exprs[,grp1],exprs[,grp2]))
-    if(class(exprs) == "try-error") {
+    exprs.n = names(exprs)
+
+    exprs.t <- try(cbind(exprs[,grp1],exprs[,grp2]))
+    if(class(exprs.t) == "try-error") {
         stop("Error in 'cbind(exprs[,grp1],exprs[,grp2])'. Please be sure that grp1 and grp2 are valid column labels/indices.")
     }
+    exprs = data.frame(exprs.t,row.names=row.names(exprs))
+    names(exprs) = exprs.n
     
     ##check for NAs in data
     if(any(is.na(exprs))) {
