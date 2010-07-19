@@ -226,11 +226,11 @@ combineQuantileFreqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
             
             matches = d.fr.common[,d.fr.common.ncol] %in% d2.fr.common.IDcols[,i]
             
-            if(sum(matches==TRUE) != length(matches)) {
+            ##if(sum(matches==TRUE) != length(matches)) {
                 d.fr.common = cbind(d.fr.common,d2.fr.common.IDcols[,i])
                 n = names(d2.fr.common.IDcols)[i]
                 attributes(d.fr.common)$names[ncol(d.fr.common)] = n
-            }
+            ##}
         }
     }
     
