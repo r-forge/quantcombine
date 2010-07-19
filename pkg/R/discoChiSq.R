@@ -4,7 +4,7 @@ discoChiSq <- function(freqs) {
     ##check that labels present
     names = names(freqs)
     if(is.null(names)) {
-        stop("Input freqs table must have column labels, which are the scores calculated by the get.quantile.scores function, e.g. -2,-1,0,1,2 if you used n.quantiles=4 as the fourth argument to get.quantile.scores. If you've read a text or CSV file into R and there are X's or V's in front of the numbers, or the negative signs are replaced by periods, this is okay, since disco.chisq will fix these.")
+        stop("Input freqs table must have column labels, which are the scores calculated by the getQuantileScores function, e.g. -2,-1,0,1,2 if you used n.quantiles=4 as the fourth argument to getQuantileScores. If you've read a text or CSV file into R and there are X's or V's in front of the numbers, or the negative signs are replaced by periods, this is okay, since discoChiSq will fix these.")
     }
     
     ##check that freqs is a data frame; convert to if otherwise
@@ -28,26 +28,54 @@ discoChiSq <- function(freqs) {
     
     ##store IDs
     freqs.IDcols = data.frame(freqs[,freqs.IDs],row.names=row.names(freqs))
-
+    names(freqs.IDcols) = names(freqs)[freqs.IDs]
+    
     ##extract only freqs
     freqs.only = freqs[,!freqs.IDs]
     names(freqs.only) = names(freqs)[!freqs.IDs]
     
     ##if loaded freqs from file, labels will likely have X's or V's at front and . for -
     names = names(freqs.only)
+
+
+    f2 = function(i){
+        parts = strsplit(names[i],"\\.")[[1]]
+
+        if(length(parts) == 2) {
+
+            if(nchar(parts[1]) == 0) {
+                return(-1 * as.integer(parts[2]))
+            }
+            else {
+                return(as.integer(parts[1]))
+            }
+        }
+        else {
+            if(length(parts) == 3) {
+                return(-1 * as.integer(parts[2]))
+            }
+            else {
+                return(as.integer(names[i]))
+            }
+        }
+    }
+    
     
     if(length(grep("X",names))>0){
         names = sapply(1:length(names),function(i){strsplit(names[i],"X")[[1]][2]})
 
         if(length(grep("\\.",names))>0) {
-            names = sub("\\.","-",names)
+            names = sapply(1:length(names),f2)
+            
+            #names = sub("\\.","-",names)
         }
     }
     if(length(grep("V",names))>0){
         names = sapply(1:length(names),function(i){strsplit(names[i],"V")[[1]][2]})
 
         if(length(grep("\\.",names))>0) {
-            names = sub("\\.","-",names)
+            names = sapply(1:length(names),f2)
+            #names = sub("\\.","-",names)
         }
     }
         
@@ -108,7 +136,7 @@ discoChiSq <- function(freqs) {
         for(i in seq(1,freqs.IDs.sum)) {
 
             results = cbind(results,freqs.IDcols[,i])
-            n = names(freqs.IDcols[,i])[1]
+            n = names(freqs.IDcols)[i]
             attributes(results)$names[ncol(results)] = n
         }
     }
