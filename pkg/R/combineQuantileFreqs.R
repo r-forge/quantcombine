@@ -34,7 +34,7 @@
 
 
 combineQuantileFreqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
-    options(warn=-1)
+    #options(warn=-1)
 
     
     if(length(ID.cols) != 2) {
@@ -103,14 +103,39 @@ combineQuantileFreqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
         d2.fr = data.frame(d2.fr[,2:ncol(d2.fr)],row.names=d2.fr[,1])
     }
 
+    m1 = ID.map[,ID.cols[1]] %in% row.names(d1.fr)
+
+    m2 = ID.map[,ID.cols[2]] %in% row.names(d2.fr)
+
+    fm = function(i) {
+	if( (m1[i] == m2[i]) & (m1[i] ==TRUE)) {
+            return(TRUE)
+	}
+	else{
+            return(FALSE)
+	}
+    }
+    mc = sapply(1:length(m1),fm)
+    ID.map.m = ID.map[mc,]
+    d1.fr.common = d1.fr[as.character(ID.map.m[,ID.cols[1]]),]
+    d2.fr.common = d2.fr[as.character(ID.map.m[,ID.cols[2]]),]
+    
     
     ##subset common IDs
-    d1.fr.common = d1.fr[as.character(ID.map[,ID.cols[1]]),]
-    d2.fr.common = d2.fr[as.character(ID.map[,ID.cols[2]]),]
+    ##d1.fr.common = d1.fr[as.character(ID.map[,ID.cols[1]]),]
+    ##d2.fr.common = d2.fr[as.character(ID.map[,ID.cols[2]]),]
     
     ## if ID.map longer than data, will show up as NAs at bottom, so remove these
-    d1.fr.common = d1.fr.common[!is.na.data.frame(d1.fr.common)[,1],]
-    d2.fr.common = d2.fr.common[!is.na.data.frame(d2.fr.common)[,1],]
+    ##d1.fr.common = d1.fr.common[!is.na.data.frame(d1.fr.common)[,1],]
+    ##d2.fr.common = d2.fr.common[!is.na.data.frame(d2.fr.common)[,1],]
+
+    ##if no IDs from data in map, cannot continue
+    if( nrow(d1.fr.common) == 0) {
+        stop(paste("There were no IDs from d1.fr found in ID.map[,",ID.cols[1],"]; cannot combine data.",sep=""))
+    }
+    if( nrow(d2.fr.common) == 0) {
+        stop(paste("There were no IDs from d2.fr found in ID.map[,",ID.cols[2],"]; cannot combine data.",sep=""))
+    }
 
     ##check which columns have data and which have IDs
     f1 = function(x) {is.factor(d1.fr.common[1,x])}
@@ -166,11 +191,33 @@ combineQuantileFreqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
             
             matches = d.fr.common[,d.fr.common.ncol] %in% d1.fr.common.IDcols[,i]
             
-            if(sum(matches==TRUE) != length(matches)) {
+            ##if(sum(matches==TRUE) != length(matches)) {
+            ##add each ID column, even if IDs are same
                 d.fr.common = cbind(d.fr.common,d1.fr.common.IDcols[,i])
                 n = names(d1.fr.common.IDcols)[i]
                 attributes(d.fr.common)$names[ncol(d.fr.common)] = n
-            }
+            ##}
+            ##if(sum(matches==TRUE) == length(matches)) {
+
+                ##d.fr.common = cbind(d.fr.common,d1.fr.common.IDcols[,i])
+                ##n1 = names(d1.fr.common.IDcols)[i]
+                ##attributes(d.fr.common)$names[ncol(d.fr.common)] = n1
+
+                ##cat("n1 is")
+                ##print(n1)
+
+                ##d.fr.common = cbind(d.fr.common,d1.fr.common.IDcols[,i])
+                
+                ##n2 = names(d1.fr.common.IDcols)[i]
+                ##cat("n2 is")
+                ##print(n2)
+                
+                ##n = paste(n1,".",n2,sep="")
+
+                ##cat("n is")
+                ##print(n)
+                ##attributes(d.fr.common)$names[ncol(d.fr.common)] = n
+            ##}
         }
     }
     
