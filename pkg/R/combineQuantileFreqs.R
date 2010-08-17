@@ -36,7 +36,7 @@
 combineQuantileFreqs <- function(d1.fr,d2.fr,ID.map,ID.cols=c(1,2)) {
     #options(warn=-1)
 
-    
+    #added comment
     if(length(ID.cols) != 2) {
         stop("ID.cols must be a vector of length 2, one value for each column index in ID.map that specifies platform IDs.")
     }
